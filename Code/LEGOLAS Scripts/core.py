@@ -55,6 +55,14 @@ def motor_move_to_pos(motor, pos, speed=None, max_iter=4, blocking=True):
         n += 1
 
 
+# self
+# def safeDeconstruct():
+#     print("testing")
+#     # self.Device._used[self.port] = False
+#     # self._conn.callit = None
+#     # self.deselect()
+#     # self.off()
+
 def connect_pi1(address, ports_map):
     # Connect to and Define Buildhats 
     conn = rpyc.classic.connect(host=address)
@@ -62,24 +70,54 @@ def connect_pi1(address, ports_map):
     r_serial1 = conn.modules.serial
     r_threading1 = conn.modules.threading
 
+
+    conn.modules.sys.stdout = sys.stdout
+   #  conn.teleport(safeDeconstruct)
+
+    conn.execute("safeDeconstruct = lambda self: print('test')")
+    conn.execute("import sys")
+    conn.execute("import buildhat")
+    conn.execute("setattr(buildhat.Motor, '__del__', safeDeconstruct)")
+
     #Motors and Sensors (BH1)
     sensor_X = r_buildhat1.ForceSensor(ports_map['force_sensor']['x']) # X axis sensor
     motor_Y = r_buildhat1.Motor(ports_map['motor']['y'])        # Y axis
     sensor_Y = r_buildhat1.ForceSensor(ports_map['force_sensor']['y']) # Y axis sensor
     pH_serial = r_serial1.Serial(pH_serial_port)
 
+    del motor_Y
+
     # unlock the motor
     motor_Y._write(f"port {motor_Y.port} ; coast\r")
 
     return conn, r_buildhat1, r_serial1, r_threading1, sensor_X, motor_Y, sensor_Y, pH_serial
-
 
 def connect_pi2(address, ports_map):
     conn = rpyc.classic.connect(host=address)
     r_buildhat2 = conn.modules.buildhat  # Cart Controls
 
     #Motors and Sensors (BH2)
-    motor_X = r_buildhat2.Motor(ports_map['motor']['x'])        # X axis
+    motor_X = r_buildhat2.Motor(ports_map['motor']['x'])
+
+    # setattr(r_buildhat2.Motor, "__del__", safeDeconstruct)
+
+    conn.modules.sys.stdout = sys.stdout
+    # conn.teleport(safeDeconstruct)
+
+    conn.execute("safeDeconstruct = lambda: print('test')")
+
+    conn.execute("import sys")
+    conn.execute("import buildhat")
+    conn.execute("setattr(buildhat.Motor, '__del__', safeDeconstruct)")
+
+
+    # print(conn.modules.sys.modules.keys())
+    
+    
+
+    #motor_X.__del__ = methodType(safeDeconstruct, motor_X, r_buildhat2.Motor)    # X axis
+    # motor_X.__del__ = methodType(safeDeconstruct, motor_X)
+
     motor_pH = r_buildhat2.Motor(ports_map['motor']['pH_z'])      # pH control 
     motor_S = r_buildhat2.Motor(ports_map['motor']['syringe_z'])       # syringe control (Z axis movement)
     motor_V =  r_buildhat2.Motor(ports_map['motor']['syringe_plunger'])      # volume control (plunger)

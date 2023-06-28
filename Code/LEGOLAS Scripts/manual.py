@@ -20,6 +20,8 @@ import sv_ttk
 import os
 import platform
 
+import traceback
+
 # if os.name == 'nt':
 if platform.system() == 'Windows':
     # windows GUI graphic options
@@ -760,6 +762,7 @@ def connect_pis(win, frame):
 
     except Exception as e:
         messagebox.showerror("Error", f"Cannot connect to Pi2, try again.\n {e}")
+        traceback.print_exc()
         return
 
     context.stage = Stage(
@@ -990,8 +993,6 @@ if __name__ == "__main__":
     finally:
         print("")
 
-    # manually close all the conn connection to release the rpyc module
-    # hope it would solve the port already in use issue.
     # print("set all motor to off")
     # cmd = "off"
     # context.stage.motor_Y._write(f"port {context.stage.motor_Y.port} ; {cmd}\r")
