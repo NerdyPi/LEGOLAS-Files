@@ -77,5 +77,5 @@ venv.bak/
 profile_default/
 ipython_config.py
 
-*.yaml
+[^ref_config]*.yaml
 *.pkl
