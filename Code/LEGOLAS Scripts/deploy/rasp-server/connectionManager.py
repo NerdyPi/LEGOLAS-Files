@@ -25,7 +25,7 @@ def create_socket():
         global port
         global s
         host = "" # TODO
-        port = 000 # TODO
+        port = 11235 # TODO
         s = socket.socket()
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
