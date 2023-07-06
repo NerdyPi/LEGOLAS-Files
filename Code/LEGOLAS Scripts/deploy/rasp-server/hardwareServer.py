@@ -11,9 +11,7 @@ For the purposes of safety, the client will retain the ability to reset the hard
 motor-controlling halts can be implemented programmatically through the provided API
 """
 
-import connectionManager
 import fiducialSystem
-import serialGateway
 
 
 import rpyc
