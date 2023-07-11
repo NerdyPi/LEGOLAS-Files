@@ -1,0 +1,19 @@
+devices:
+  depo:
+    s_positions: {}
+    vol_deg_map: {}
+    x_offset: null
+    y_offset: null
+  pH:
+    pH_positions: {}
+    verbose: true
+    x_offset: null
+    y_offset: null
+global:
+  pi1_address: 192.168.0.61
+  pi2_address: 192.168.0.62
+stage:
+  aux_loc_map: {}
+  cell_loc_map: /Users/wtl/Documents/repos/LEGOLAS/LEGOLAS-Files/Code/LEGOLAS Scripts/client/config/cell_map.pkl
+  home_x_offset: -100
+  home_y_offset: -100

@@ -17,34 +17,14 @@ from matplotlib import pyplot as plt
 
 from scipy.interpolate import interp1d
 
+from constants import PI1_MAP as ports_map_pi1
+from constants import PI2_MAP as ports_map_pi2
+from constants import PH_SERIAL as pH_serial_port
+
 # import cv2 # computer vision package
 # import GPy
 
 warnings.filterwarnings('ignore')
-
-
-ports_map_pi1 = {
-    "motor" : {
-        "y" : "C",
-    },
-    "force_sensor": {
-        "x" : "D",
-        "y" : "B",
-    }
-}
-
-ports_map_pi2 = {
-    "motor" : {
-        "x" : "C",
-        "syringe_plunger" : "D",
-        "syringe_z" : "B",
-        "pH_z" : "A"
-    }
-}
-
-# use "python -m serial.tools.list_ports -v" to check connected port
-# or "ls /dev/tty*" and find anything end with ACM
-pH_serial_port = "/dev/ttyACM0"
 
 def motor_move_to_pos(motor, pos, speed=None, max_iter=4, blocking=True):
     curr_pos = motor.get_position()
